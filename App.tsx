@@ -1,20 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
+import { NavigationContainer } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Navigation from './src/routes/Navigation';
+import useFontsList from './src/hooks/useFontsList';
+
+export default function App() { 
+  const {fontsLoaded} = useFontsList();
+
+  if(!fontsLoaded) {
+      return null;
+  } 
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <NavigationContainer>
+        <Navigation/>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+ 
