@@ -11,17 +11,25 @@ import LabelButton from '../../components/LabelButton';
 import SpinnerLoading from '../../components/SpinnerLoading';
 import { styles } from './styles';
 
-const HeadIcon = ():JSX.Element => (
-    <Fragment>
-        <Image 
-            source={require('../../../../assets/icon.png')} 
-            style={styles.imageStyle}
-            resizeMode="contain"
-        />
-        <Text style={styles.textTitleStyle}>Welcome to Ecommerce</Text>
-        <Text style={styles.textSubTitle}>Sign in to continue</Text>
-    </Fragment>
-);
+type headerIcon = {
+    headTitle: string;
+    subTitle: string;
+}
+
+export const HeadIcon = (props: headerIcon):JSX.Element => {
+    const {headTitle, subTitle} = props
+    return (
+        <Fragment>
+            <Image 
+                source={require('../../../../assets/icon.png')} 
+                style={styles.imageStyle}
+                resizeMode="contain"
+            />
+            <Text style={styles.textTitleStyle}>{headTitle}</Text>
+            <Text style={styles.textSubTitle}>{subTitle}</Text>
+        </Fragment>
+    );
+};
 
 const OrSparator = ():JSX.Element => (
     <View style={styles.orContainer}>
@@ -33,15 +41,19 @@ const OrSparator = ():JSX.Element => (
     </View>
 )
 
-const Login = ():JSX.Element => { 
-    
+const Login = (props: any):JSX.Element => { 
+    const {navigation} = props;
+    const signIn = () => navigation.navigate('homeRoute');
   return (
     <SafeAreaView style={styles.root}>
         <SpinnerLoading isVisible={false}/>
         <ScrollView contentContainerStyle={styles.scrollStyle}>
             <View style={styles.container}>
                 <View style={styles.bannerContainer}>
-                    <HeadIcon/>
+                    <HeadIcon
+                        headTitle="Welcome to Ecommerce"
+                        subTitle="Sign in to continue"
+                    />
                 </View> 
                 <View style={styles.formContainer}>
                     <InputFields 
@@ -53,7 +65,7 @@ const Login = ():JSX.Element => {
                         placeHolder="*********"
                         secureTextEntry={true}
                     />
-                    <FlatButtons label="Sign in" />
+                    <FlatButtons label="Sign in" onPress={signIn}/>
                     <OrSparator/>
                     <View style={styles.smallGap}>
                         <BorderedButton
@@ -72,7 +84,9 @@ const Login = ():JSX.Element => {
                             <Text style={styles.donthaveStyle}>
                                 Don't have an account? 
                             </Text>
-                            <LabelButton label="Register"/>
+                            <LabelButton label="Register"
+                                onPress={() => navigation.navigate('registration')}
+                            />
                         </View>
                     </View>
                 </View>
