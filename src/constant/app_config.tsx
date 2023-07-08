@@ -31,7 +31,7 @@ export const LogoSize = {
 export const Sizes = {
     sm:width*.065,
     xsm: width*.058,
-    xxsm: 0,
+    xxsm: width*.048,
     xxxsm: 0,
     md:width*.09,
     xm:0,

@@ -1,22 +1,45 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Colors } from '../../constant/app_config';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Colors, Sizes } from '../../constant/app_config';
+import HeaderNavHome from './components/HeaderNavHome';
+ 
 const Home = () => {
   return (
-    <View style={{backgroundColor: Colors.primary, flex: 1}}>
-      <SafeAreaView style={{flex: 1,}}>
-          <Text>Home</Text>
-        <View style={{flex: 1, backgroundColor: Colors.white}}>
-        </View>
-      </SafeAreaView>
+    <View style={styles.root}> 
+      <SafeAreaView style={styles.safearea}>
+        <HeaderNavHome
+          headerTitle="Dashboard"
+          icons={<Ionicons 
+            name="ios-home-outline" 
+            size={Sizes.sm} 
+            color={Colors.white}
+            />
+          }
+        />
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+          <View style={styles.container}>
+            {/* body list */}
+          </View>
+        </ScrollView>
+      </SafeAreaView> 
     </View>
-  )
+  );
 }
 
-export default Home
+export default Home;
 
 const styles = StyleSheet.create({
-
+  root: {
+    backgroundColor: Colors.primary, 
+    flex: 1
+  },
+  safearea: {
+    flex: 1,
+  },
+  container: {
+    flex: 1, 
+    backgroundColor: Colors.white
+  }
 });
