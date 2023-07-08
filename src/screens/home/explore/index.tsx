@@ -1,8 +1,9 @@
-import { StyleSheet, SafeAreaView, View, ScrollView } from 'react-native'
-import React from 'react'
-import { Colors, Sizes } from '../../../constant/app_config'
-import HeaderNavHome from '../components/HeaderNavHome'
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { Colors, Sizes } from '../../../constant/app_config';
+import HeaderNavHome from '../components/HeaderNavHome';
 
 const Explores = () => {
   return (

@@ -4,7 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Colors, Sizes } from '../../constant/app_config';
 import HeaderNavHome from './components/HeaderNavHome';
- 
+import SearchBar from './home/SearchBar';
+
 const Home = () => {
   return (
     <View style={styles.root}> 
@@ -20,7 +21,7 @@ const Home = () => {
         />
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <View style={styles.container}>
-            {/* body list */}
+            <SearchBar/>
           </View>
         </ScrollView>
       </SafeAreaView> 
@@ -41,5 +42,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, 
     backgroundColor: Colors.white
+  },
+  smallDot: {
+    backgroundColor: Colors.red, 
+    width: 10, 
+    height: 10, 
+    borderRadius: 20, 
+    position: 'absolute', 
+    zIndex: 999, 
+    right: 0
   }
 });

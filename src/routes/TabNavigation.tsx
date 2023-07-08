@@ -54,7 +54,7 @@ const TabNavigation = () => {
             <Tab.Screen 
                 name="carts"
                 component={Carts}
-                options={{
+                options={{ 
                     tabBarIcon: ({focused}: any) => (
                         <TabBarIconComponent
                             icon={<AntDesign

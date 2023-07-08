@@ -1,18 +1,45 @@
-import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 import { Colors, FontSize, FontStyle, Sizes } from '../../../constant/app_config';
+import { useValidation } from '../../../hooks/useValidatation';
 import FlatButtons from '../../components/FlatButtons';
 import InputFields from '../../components/InputFields';
 import LabelButton from '../../components/LabelButton';
+import SpinnerLoading from '../../components/SpinnerLoading';
 import { HeadIcon } from '../login';
 
+export const sleep = (time: number) => new Promise((resolve) => setTimeout(resolve,time));
+
 const Regisration = (props: any):JSX.Element => {
-    const {navigation} = props; 
+    const {navigation, register} = props; 
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const isValidation = useValidation();
+
+    const validate = async () => {
+        setLoading(true);
+        await sleep(1000);
+        setLoading(false);  
+        if(isValidation.validate()) {
+          return;
+        }
+        register({
+            fullname: isValidation.isFullName,
+            email: isValidation.isEmail,
+            password: isValidation.isPassword
+        }); 
+        isValidation.clearInput();
+        Alert.alert('Message Alert', 'Successful registered. Please login your account', [{
+            text: "CLOSE",
+        },{text: "SIGN IN", onPress: () => navigation.goBack()}])
+    }
+
   return (
       <View style={styles.root}>
+        <SpinnerLoading isVisible={isLoading}/>
           <SafeAreaView style={styles.safearea}>
             <ScrollView contentContainerStyle={styles.scrollStyle}>
                 <View style={styles.headerContainer}>
@@ -25,25 +52,39 @@ const Regisration = (props: any):JSX.Element => {
                     <InputFields 
                         icon={<Feather name="user" color={Colors.gray} size={Sizes.sm}/>}
                         placeHolder="Full Name"
+                        value={isValidation.isFullName}
+                        onChangeText={isValidation.setFullName}
+                        error={isValidation.isErrorFullname.error}
+                        errorMessage={isValidation.isErrorFullname.message}
                     />
                     <InputFields 
                         icon={<FontAwesome name="envelope-o" color={Colors.gray} size={Sizes.sm}/>}
                         placeHolder="Your Email"
+                        value={isValidation.isEmail}
+                        onChangeText={isValidation.setEmail}
+                        error={isValidation.isErrorEmail.error}
+                        errorMessage={isValidation.isErrorEmail.message}
                     />
                     <InputFields 
                         icon={<Feather name="lock" size={Sizes.sm} color={Colors.gray}/>}
                         placeHolder="Password"
                         secureTextEntry={true}
+                        value={isValidation.isPassword}
+                        onChangeText={isValidation.setPassword} 
+                        error={isValidation.isErrorPassword.error}
+                        errorMessage={isValidation.isErrorPassword.message}
                     />
                     <InputFields 
                         icon={<Feather name="lock" size={Sizes.sm} color={Colors.gray}/>}
                         placeHolder="Password Again"
                         secureTextEntry={true}
+                        value={isValidation.isPasswordConf}
+                        onChangeText={isValidation.setPasswordConf}
+                        error={isValidation.isErrorPasswordConfi.error}
+                        errorMessage={isValidation.isErrorPasswordConfi.message}
                     />
                     <View style={styles.buttonSpace}>
-                        <FlatButtons 
-                            label="Sign up"
-                        />
+                        <FlatButtons onPress={validate} label="Sign up"/>
                     </View>
                     <View style={styles.containerBottom}>
                         <Text style={styles.textBottom}>Have an Account?</Text>
@@ -56,7 +97,16 @@ const Regisration = (props: any):JSX.Element => {
   );
 }
 
-export default Regisration
+const mapTodispatch = (dispatch: any) => ({
+    register: (props: any) => dispatch({
+        type: "registered", 
+        fullname: props.fullname,
+        email: props.email,
+        password: props.password
+    })
+});
+
+export default connect(null, mapTodispatch)(Regisration)
 
 const styles = StyleSheet.create({
     root: {

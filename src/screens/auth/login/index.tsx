@@ -1,14 +1,18 @@
-import React, { Fragment } from 'react';
-import { Image, ScrollView, Text, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import React, { Fragment, useState } from 'react';
+import { Alert, Image, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 import { Colors, Sizes } from '../../../constant/app_config';
+import { loginValidation, useValidation } from '../../../hooks/useValidatation';
 import BorderedButton from '../../components/BorderedButton';
 import FlatButtons from '../../components/FlatButtons';
 import InputFields from '../../components/InputFields';
 import LabelButton from '../../components/LabelButton';
 import SpinnerLoading from '../../components/SpinnerLoading';
+import { sleep } from '../Registration';
 import { styles } from './styles';
 
 type headerIcon = {
@@ -17,7 +21,7 @@ type headerIcon = {
 }
 
 export const HeadIcon = (props: headerIcon):JSX.Element => {
-    const {headTitle, subTitle} = props
+    const {headTitle, subTitle, } = props
     return (
         <Fragment>
             <Image 
@@ -42,11 +46,39 @@ const OrSparator = ():JSX.Element => (
 )
 
 const Login = (props: any):JSX.Element => { 
-    const {navigation} = props;
-    const signIn = () => navigation.navigate('homeRoute');
+    const {navigation, registered} = props;
+    const [isLoading, setLoading] = useState<boolean>(false); 
+    const isValidate = loginValidation();
+
+    const signIn = async () => { 
+        setLoading(true);
+        await sleep(1000);
+        setLoading(false); 
+         
+       
+        if(isValidate.validate()){
+            return;
+        }  
+        if((registered.email == isValidate.isEmail) && (registered.password == isValidate.isPassword)) {
+            Alert.alert('Message Alert', 'Successful login', [{
+                text: "Proceed",
+                onPress: () => {
+                    navigation.navigate('homeRoute');
+                }
+            }])
+        }else {
+            
+            isValidate.setErrorEmail({error: true});
+            isValidate.setErrorPassword({
+                error: true, 
+                message: "Your email and password not found!"
+            });
+        }
+    };  
   return (
     <SafeAreaView style={styles.root}>
-        <SpinnerLoading isVisible={false}/>
+        <StatusBar style="dark" backgroundColor={Colors.white}/>
+        <SpinnerLoading isVisible={isLoading}/>
         <ScrollView contentContainerStyle={styles.scrollStyle}>
             <View style={styles.container}>
                 <View style={styles.bannerContainer}>
@@ -59,11 +91,20 @@ const Login = (props: any):JSX.Element => {
                     <InputFields 
                         icon={<FontAwesome name="envelope-o" size={Sizes.sm} color={Colors.gray}/>}
                         placeHolder="test@gmail.com" 
+                        value={isValidate.isEmail}
+                        onChangeText={isValidate.setEmail}
+                        error={isValidate.isErrorEmail.error}
+                        errorMessage={isValidate.isErrorEmail.message}
                     />
                     <InputFields 
                         icon={<Feather name="lock" size={Sizes.sm} color={Colors.gray}/>}
                         placeHolder="*********"
                         secureTextEntry={true}
+                        value={isValidate.isPassword}
+                        onChangeText={isValidate.setPassword}
+                        error={isValidate.isErrorPassword.error}
+                        errorMessage={isValidate.isErrorPassword.message}
+
                     />
                     <FlatButtons label="Sign in" onPress={signIn}/>
                     <OrSparator/>
@@ -85,7 +126,7 @@ const Login = (props: any):JSX.Element => {
                                 Don't have an account? 
                             </Text>
                             <LabelButton label="Register"
-                                onPress={() => navigation.navigate('registration')}
+                                onPress={() =>navigation.navigate('registration')}
                             />
                         </View>
                     </View>
@@ -96,6 +137,10 @@ const Login = (props: any):JSX.Element => {
   );
 }
 
-export default Login
+const mapToStates = (state: any) => ({
+    registered: state.registered
+}); ;
+
+export default connect(mapToStates, null)(Login);
 
  

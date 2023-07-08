@@ -5,7 +5,7 @@ import { Colors, FontSize, FontStyle } from '../../constant/app_config';
 
 interface flatbuttonProps {
     label: string;
-    onPress?: () => void|undefined
+    onPress?: any
 }
 
 const FlatButtons = (props: flatbuttonProps):JSX.Element => {

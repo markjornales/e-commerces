@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="login">
         <Stack.Group screenOptions={{headerShown: false, animation: "fade"}}>
             <Stack.Screen name="login" component={Login}/>
             <Stack.Screen name="registration" component={Regisration}/>

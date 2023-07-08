@@ -11,10 +11,11 @@ interface inputFieldsProps {
     secureTextEntry?:boolean
     placeHolder?: string;
     icon?: JSX.Element
+    editable?: boolean;
 }
 
 const InputFields = (props: inputFieldsProps):JSX.Element => {
-    const {error, errorMessage, onChangeText, value, secureTextEntry, placeHolder, icon} = props;
+    const {error, errorMessage, onChangeText, value, secureTextEntry, placeHolder, icon, editable=true} = props;
     const [isEyeOpen, setEyeOpen] = useState<boolean>(false);
     return (
         <View style={styles.root}>
@@ -28,6 +29,7 @@ const InputFields = (props: inputFieldsProps):JSX.Element => {
                         placeholder={placeHolder}
                         onChangeText={onChangeText}
                         value={value}
+                        editable={editable}
                     />
                 </View>
                 {secureTextEntry && <TouchableOpacity onPress={()=> setEyeOpen(init=> !init)}>
@@ -35,7 +37,7 @@ const InputFields = (props: inputFieldsProps):JSX.Element => {
                 </TouchableOpacity>
                 }
             </View>
-            {error && (<Text style={styles.errorMsgStyle}>{errorMessage}</Text>)}
+            {error && errorMessage && (<Text style={styles.errorMsgStyle}>{errorMessage}</Text>)}
         </View>
     );
 }
