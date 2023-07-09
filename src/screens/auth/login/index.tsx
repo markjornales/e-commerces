@@ -11,15 +11,14 @@ import BorderedButton from '../../components/BorderedButton';
 import FlatButtons from '../../components/FlatButtons';
 import InputFields from '../../components/InputFields';
 import LabelButton from '../../components/LabelButton';
-import SpinnerLoading from '../../components/SpinnerLoading';
-import { sleep } from '../Registration';
+import SpinnerLoading from '../../components/SpinnerLoading'; 
 import { styles } from './styles';
 
 type headerIcon = {
     headTitle: string;
     subTitle: string;
 }
-
+const sleep = (time: number) => new Promise((resolve) => setTimeout(resolve,time));
 export const HeadIcon = (props: headerIcon):JSX.Element => {
     const {headTitle, subTitle, } = props
     return (
@@ -46,28 +45,25 @@ const OrSparator = ():JSX.Element => (
 )
 
 const Login = (props: any):JSX.Element => { 
-    const {navigation, registered} = props;
+    const {navigation, registered, isLogin} = props;
     const [isLoading, setLoading] = useState<boolean>(false); 
-    const isValidate = loginValidation();
-
+    const isValidate = loginValidation();  
     const signIn = async () => { 
         setLoading(true);
         await sleep(1000);
-        setLoading(false); 
-         
-       
+        setLoading(false);  
         if(isValidate.validate()){
             return;
         }  
-        if((registered.email == isValidate.isEmail) && (registered.password == isValidate.isPassword)) {
+        if((registered.email == isValidate.isEmail) && (registered.password == isValidate.isPassword)) { 
             Alert.alert('Message Alert', 'Successful login', [{
                 text: "Proceed",
                 onPress: () => {
+                    isLogin();
                     navigation.navigate('homeRoute');
                 }
-            }])
-        }else {
-            
+            }]);
+        }else { 
             isValidate.setErrorEmail({error: true});
             isValidate.setErrorPassword({
                 error: true, 
@@ -138,9 +134,12 @@ const Login = (props: any):JSX.Element => {
 }
 
 const mapToStates = (state: any) => ({
-    registered: state.registered
-}); ;
+    registered: state.registered,
+}); 
 
-export default connect(mapToStates, null)(Login);
+const mapToDispatch = (dispatch:any) => ({
+    isLogin: () => dispatch({type: 'is_login'})
+})
+export default connect(mapToStates, mapToDispatch)(Login);
 
  

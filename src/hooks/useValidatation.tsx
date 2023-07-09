@@ -4,11 +4,18 @@ interface errorProps {
     message?: string,
     error?: boolean
 }
-export function useValidation () {
-    const [isFullName, setFullName] = useState<string>('');
-    const [isEmail, setEmail] = useState<string>('');
-    const [isPassword, setPassword] = useState<string>('');
-    const [isPasswordConf, setPasswordConf] = useState<string>('');
+interface validateProps{
+    fullname?: string;
+    email?: string;
+    password?: string;
+}
+
+export function useValidation (prop:validateProps={}) {
+    const {fullname='', email='', password=''} = prop;
+    const [isFullName, setFullName] = useState<string>(fullname);
+    const [isEmail, setEmail] = useState<string>(email);
+    const [isPassword, setPassword] = useState<string>(password);
+    const [isPasswordConf, setPasswordConf] = useState<string>(password);
     const [isErrorFullname, setErrorFullname] = useState<errorProps>({})
     const [isErrorEmail, setErrorEmail] = useState<errorProps>({})
     const [isErrorPassword, setErrorPassword] = useState<errorProps>({})

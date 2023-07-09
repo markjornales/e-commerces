@@ -12,7 +12,7 @@ import LabelButton from '../../components/LabelButton';
 import SpinnerLoading from '../../components/SpinnerLoading';
 import { HeadIcon } from '../login';
 
-export const sleep = (time: number) => new Promise((resolve) => setTimeout(resolve,time));
+const sleep = (time: number) => new Promise((resolve) => setTimeout(resolve,time));
 
 const Regisration = (props: any):JSX.Element => {
     const {navigation, register} = props; 
@@ -128,8 +128,8 @@ const styles = StyleSheet.create({
         marginVertical: 20
     },
     bodyContainer: {
-        flexGrow: 1, 
         gap: 10, 
+        flexGrow: 1, 
         paddingHorizontal: 20
     },
     buttonSpace: {

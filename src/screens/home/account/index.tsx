@@ -1,27 +1,93 @@
-import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, {useState, Fragment, useEffect, useRef} from 'react';
+import { ScrollView, StyleSheet, View, Alert, BackHandler } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Colors, Sizes } from '../../../constant/app_config';
 import HeaderNavHome from '../components/HeaderNavHome';
+import ButtonSimple from './components/ButtonSimple';
+import {connect} from 'react-redux';
+import Profile from './Profile';
 
-const Accounts = () => {
+const Accounts = ({navigation, isLogin}:any) => {
+  const [isProfile, setProfile] = useState<boolean>(false);
+  const isBackKey = useRef<any>();
+
+  useEffect(() => {
+    if(isProfile){
+      isBackKey.current = BackHandler.addEventListener('hardwareBackPress', () => {
+        setProfile(false);
+        return true;
+      })
+      return () => {
+        isBackKey.current.remove();
+      }
+    }
+  }, [isProfile]);
+
   return (
     <View style={styles.root}> 
       <SafeAreaView style={styles.safearea}>
         <HeaderNavHome
-          headerTitle="Account"
-          icons={<Feather 
+          headerTitle={isProfile? "Profile": "Account"}
+          icons={
+            isProfile? 
+            <MaterialIcons
+              name='arrow-back-ios'
+              size={Sizes.sm} 
+              color={Colors.white}
+            />:
+            <Feather 
             name="user" 
             size={Sizes.sm} 
             color={Colors.white}
             />
           } 
           bellNotif={true}
+          isIconClick={!isProfile}
+          iconCliick={() => {
+            if(isProfile){
+              setProfile(false);
+            }
+          }}
         />
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <View style={styles.container}>
-            {/* body list */}
+            {!isProfile?
+            <Fragment>
+            <ButtonSimple
+                icon={<Feather 
+                  name="user" 
+                  size={Sizes.md} 
+                  color={Colors.scondary}
+                  />
+              }
+                label="Profile"
+                onPress={() => {
+                  setProfile(true)
+                }}
+            />
+            <ButtonSimple
+                icon={<Feather 
+                  name="log-out" 
+                  size={Sizes.md} 
+                  color={Colors.scondary}
+                />}
+                label="Sign out"
+                onPress={() => {
+                  Alert.alert('Confirm Message', 'Do you want to sign out?', [
+                    {text: 'No'},
+                    {text: 'YES', onPress: () => {
+                      isLogin();
+                      navigation.navigate('login');
+                    }}
+                  ])
+                }}
+            />
+            </Fragment>
+            : 
+              <Profile/>
+            }
           </View>
         </ScrollView>
       </SafeAreaView> 
@@ -29,7 +95,11 @@ const Accounts = () => {
   );
 }
 
-export default Accounts
+const mapToDispatch = (dispatch:any) => ({
+  isLogin: () => dispatch({type: 'is_logout'})
+})
+
+export default connect(null, mapToDispatch)(Accounts)
 
 const styles = StyleSheet.create({
   root: {
@@ -41,6 +111,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1, 
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
+    paddingVertical: 8
   }
 });

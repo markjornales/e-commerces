@@ -8,15 +8,27 @@ interface headerNavHomeProps {
     headerTitle: string;
     notif?: boolean;
     bellNotif?: boolean;
-    bellClick?: () => void| undefined
+    bellClick?: () => void| undefined;
+    iconCliick?: () => void | undefined;
+    isIconClick?: boolean;
 }
 
 const HeaderNavHome = (props: headerNavHomeProps) => {
-    const {headerTitle, icons, notif, bellClick, bellNotif} = props;
+    const {
+      headerTitle, 
+      bellNotif, 
+      isIconClick = true, 
+      icons, 
+      notif, 
+      iconCliick,
+      bellClick, 
+    } = props;
   return (
     <View style={styles.root}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.primary}/>
-      {icons}
+      <TouchableOpacity onPress={iconCliick} disabled={isIconClick}>
+        {icons}
+      </TouchableOpacity>
       <Text style={styles.titleHeaderStyle}>{headerTitle}</Text>
       {bellNotif && <View style={styles.bellContainer}>
         <TouchableOpacity onPress={bellClick}>

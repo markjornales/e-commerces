@@ -1,9 +1,10 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { Colors, Sizes } from '../../../constant/app_config';
+import { Colors, FontSize, FontStyle, Sizes } from '../../../constant/app_config';
 import HeaderNavHome from '../components/HeaderNavHome';
+import Lottie from 'lottie-react-native';
 
 const Explores = () => {
   return (
@@ -20,7 +21,21 @@ const Explores = () => {
         />
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <View style={styles.container}>
-            {/* body list */}
+             <Lottie
+                source={require('../../../json/51382-astronaut-light-theme.json')}
+                loop={true}
+                autoPlay   
+             />
+             <View style={{
+              flex: 0.35,  
+              alignItems: 'center',
+             }}>
+              <Text style={{
+                fontFamily: FontStyle.primaryBold,
+                fontSize: FontSize.md,
+                color: Colors.gray
+              }}>Sorry! Not Found</Text>
+             </View>
           </View>
         </ScrollView>
       </SafeAreaView> 
@@ -40,6 +55,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1, 
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white, 
+    justifyContent: 'flex-end'
   }
 });

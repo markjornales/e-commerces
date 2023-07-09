@@ -2,7 +2,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {reducer, action} from 'easy-peasy';
 
 const initState = {
-    registered: {}    
+    registered: {
+        fullname: '',
+        email: '',
+        password: ''
+    },
+    login: {
+        isLogin: false,
+    }
 }
 
 const registered = reducer((state = initState.registered, action) => {
@@ -17,6 +24,20 @@ const registered = reducer((state = initState.registered, action) => {
     }
 });
 
+const login = reducer((state = initState.login, action) => {
+    switch(action.type) {
+        case "is_login":
+            return state = {
+                isLogin: true
+            };
+        case "is_logout":
+            return state = {
+                isLogin: false
+            }
+        default: return state;
+    }
+});
+
 
 const reset = action(() => {
     AsyncStorage.clear();
@@ -25,5 +46,6 @@ const reset = action(() => {
 
 export const model = {  
     reset,
-    registered
+    registered,
+    login
 }
