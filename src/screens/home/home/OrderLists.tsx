@@ -10,6 +10,7 @@ const datalists = [
         stars: 5,
         tagprice: 293,
         discount: 25,
+        quantity: 2,
     },
     {
       id: 2,
@@ -17,7 +18,8 @@ const datalists = [
       productname: "Nike Men's Blazer Low '77 Premium Shoes - White",
       stars: 5,
       tagprice: 3000,
-      discount: 20
+      discount: 20,
+      quantity: 1,
     },
     {
         id: 3,
@@ -25,7 +27,8 @@ const datalists = [
         productname: "NEW ARRIVAL!! air force 1 for men AND WOMEN 36-45",
         stars: 3,
         tagprice: 300,
-        discount: 0
+        discount: 0,
+        quantity: 1,
     },
     {
         id: 4,
@@ -34,6 +37,7 @@ const datalists = [
         tagprice: 4000,
         stars: 4,
         discount: 50,
+        quantity: 1,
     },
     {
         id: 5,
@@ -42,6 +46,7 @@ const datalists = [
         tagprice: 5300,
         stars: 5,
         discount: 50,
+        quantity: 1,
     },
     {
         id:6,
@@ -50,6 +55,7 @@ const datalists = [
         tagprice: 600,
         stars: 5,
         discount: 50,
+        quantity: 1,
     }
 ]
 

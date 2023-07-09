@@ -9,7 +9,8 @@ const initState = {
         email: '',
         password: ''
     },
-    carts: []
+    carts: [],
+    checkout: []
 }
 
 const registered = reducer((state = initState.registered, action) => {
@@ -53,12 +54,39 @@ const login = reducer((state = initState.login, action) => {
 const carts = reducer((state = initState.carts, action) => {
     switch(action.type){
         case "add_to_cart":
-            return [...state, action.data];
+            const exists = state.find((data) => data.id == action.data.id);
+            if(exists) {
+                return state.map((data) => {
+                    if(data.id == action.data.id) {
+                        data.quantity ++;
+                    }
+                    return data;
+                })
+            } else {
+                return [...state, action.data];
+            }
+        case "add_minus_item": 
+            return state.map((data) => {
+                if(data.id == action.data.id){
+                    data.quantity = action.data.quantity;
+                }
+                return data;
+            });
         case "delete_item":
             return state.filter((data) => data.id !== action.data);
+        case "remove_all_item":
+            return state = [];
         default: return state;
     }
 });
+
+const checkout = reducer((state=initState.checkout, action) => {
+    switch(action.type) {
+        case "checkout_now":
+            return [...state, action.data];
+        default: return state;
+    }
+})
 
 const reset = action(() => {
     AsyncStorage.clear();
@@ -69,5 +97,6 @@ export const model = {
     reset,
     registered,
     login,
-    carts
+    carts,
+    checkout
 }

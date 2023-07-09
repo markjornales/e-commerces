@@ -6,7 +6,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {connect} from 'react-redux';
 
-
 const sleep = (time: number) => new Promise((resolve) => setTimeout(resolve,time));
 
 const Itemslist = (data: any) => {
@@ -56,7 +55,7 @@ const Itemslist = (data: any) => {
                         {'\u20B1'} {totalprice.toLocaleString()}
                     </Text>
                 </View>
-                {/* <ButtonPlusMinus/> */}
+                <ButtonPlusMinus {...data}/>
             </View>
         </View> 
     </View>
@@ -64,7 +63,23 @@ const Itemslist = (data: any) => {
 }
 
 
-const ButtonPlusMinus = () => {
+const ButtonPlusMinus = (data:any) => {
+    const handleMinusButton = () => {
+        if(data.quantity > 1){
+            data.quantity --;
+            data.addMinusItem({
+                id: data.id,
+                quantity: data.quantity 
+            }); 
+        }
+    }
+    const handlePlusButton = () => { 
+        data.quantity ++;
+        data.addMinusItem({
+            id: data.id,
+            quantity: data.quantity 
+        });
+    }
     return (
         <View style={{
             justifyContent: "center",
@@ -77,12 +92,11 @@ const ButtonPlusMinus = () => {
                 borderRadius: 10,
                 overflow: 'hidden'
             }}> 
-                <TouchableOpacity style={{
+                <TouchableOpacity onPress={handleMinusButton} style={{
                     backgroundColor: Colors.white,
                     paddingHorizontal: 7,
                     borderBottomLeftRadius: 7,
-                    borderTopLeftRadius: 7,
-                    
+                    borderTopLeftRadius: 7, 
                 }}>
                     <Entypo name="minus" size={Sizes.xsm} color={Colors.gray}/> 
                 </TouchableOpacity> 
@@ -93,9 +107,9 @@ const ButtonPlusMinus = () => {
                         fontFamily: FontStyle.primary,
                         fontSize: FontSize.sm,
                         color: Colors.gray
-                    }}>1</Text>
+                    }}>{data.quantity}</Text>
                 </View> 
-                <TouchableOpacity style={{
+                <TouchableOpacity onPress={handlePlusButton} style={{
                     backgroundColor: Colors.white,
                     paddingHorizontal: 7,
                     borderBottomRightRadius: 7,
@@ -109,7 +123,8 @@ const ButtonPlusMinus = () => {
 }
 
 export default connect(null, (dispatch:any) => ({
-    deleteItem: (id:any) => dispatch({type: 'delete_item', data: id})
+    deleteItem: (id:any) => dispatch({type: 'delete_item', data: id}),
+    addMinusItem: (prop:any) => dispatch({type: 'add_minus_item', data: prop})
 }))(Itemslist)
 
 const styles = StyleSheet.create({

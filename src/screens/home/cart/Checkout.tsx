@@ -1,11 +1,28 @@
 import { StyleSheet, Text, View, TextInput} from 'react-native'
-import React from 'react';
+import React, {forwardRef, useImperativeHandle} from 'react';
 import {RectButton} from 'react-native-gesture-handler';
 import { Colors, FontSize, FontStyle } from '../../../constant/app_config';
+import timeZone from 'moment-timezone';
+import generateRef from './reference';
 
-const Checkout = (props: any) => {
+timeZone.tz.setDefault('Asia/Manila');
+
+const Checkout = (props: any, ref:any) => {
     const {data} = props;
-    const totalpriceItem = data.map((values:any) => values.tagprice)?.reduce((value1:number, value2:number) => value1 + value2);
+    const totalpriceItem = data.map((values:any) => { 
+        const discount = values.discount/100;
+        const tagpricediscounted = values.tagprice * discount;
+        const totalprice = values.tagprice - tagpricediscounted;
+        return totalprice * values.quantity;
+    })?.reduce((value1:number, value2:number) => value1 + value2);
+    
+    useImperativeHandle(ref, () => ({
+        total_checkout: totalpriceItem,
+        total_items: data.length,
+        date: timeZone(new Date()).format('MMMM DD, YYYY'),
+        reference_number: generateRef()
+    }));
+
   return (
     <View style={{flexGrow: 1}}>
       <View style={{ marginVertical: 25 }}>
@@ -138,6 +155,6 @@ const ButtonCupons = () => {
     )
 }
 
-export default Checkout
+export default forwardRef(Checkout)
 
 const styles = StyleSheet.create({})

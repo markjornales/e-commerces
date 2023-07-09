@@ -3,35 +3,39 @@ import { ScrollView, StyleSheet, View, Alert, BackHandler } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Octicons from 'react-native-vector-icons/Octicons';
 import { Colors, Sizes } from '../../../constant/app_config';
 import HeaderNavHome from '../components/HeaderNavHome';
 import ButtonSimple from './components/ButtonSimple';
 import {connect} from 'react-redux';
 import Profile from './Profile';
+import Orders from './Orders';
 
 const Accounts = ({navigation, isLogin}:any) => {
   const [isProfile, setProfile] = useState<boolean>(false);
+  const [isOrders, setOrders] = useState<boolean>(false);
   const isBackKey = useRef<any>();
 
   useEffect(() => {
     if(isProfile){
       isBackKey.current = BackHandler.addEventListener('hardwareBackPress', () => {
         setProfile(false);
+        setOrders(false);
         return true;
       })
       return () => {
         isBackKey.current.remove();
       }
     }
-  }, [isProfile]);
+  }, [isProfile, isOrders]);
 
   return (
     <View style={styles.root}> 
       <SafeAreaView style={styles.safearea}>
         <HeaderNavHome
-          headerTitle={isProfile? "Profile": "Account"}
+          headerTitle={isProfile? "Profile": isOrders? "Orders": "Account"}
           icons={
-            isProfile? 
+            isProfile || isOrders? 
             <MaterialIcons
               name='arrow-back-ios'
               size={Sizes.sm} 
@@ -44,16 +48,19 @@ const Accounts = ({navigation, isLogin}:any) => {
             />
           } 
           bellNotif={true}
-          isIconClick={!isProfile}
+          isIconClick={!isProfile && !isOrders}
           iconCliick={() => {
             if(isProfile){
               setProfile(false);
+            }
+            if(isOrders) {
+              setOrders(false);
             }
           }}
         />
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <View style={styles.container}>
-            {!isProfile?
+            {!isProfile && !isOrders?
             <Fragment>
             <ButtonSimple
                 icon={<Feather 
@@ -65,6 +72,18 @@ const Accounts = ({navigation, isLogin}:any) => {
                 label="Profile"
                 onPress={() => {
                   setProfile(true)
+                }}
+            />
+            <ButtonSimple
+                icon={<Octicons 
+                  name="tag" 
+                  size={Sizes.md} 
+                  color={Colors.scondary}
+                  />
+              }
+                label="Orders"
+                onPress={() => {
+                  setOrders(true)
                 }}
             />
             <ButtonSimple
@@ -86,7 +105,9 @@ const Accounts = ({navigation, isLogin}:any) => {
             />
             </Fragment>
             : 
-              <Profile/>
+              isProfile? 
+              <Profile/>: 
+              <Orders/>
             }
           </View>
         </ScrollView>

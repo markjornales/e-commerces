@@ -1,6 +1,6 @@
 import Lottie from 'lottie-react-native';
-import React, { Fragment, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { Fragment, useState, useRef } from 'react';
+import { ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
@@ -11,8 +11,25 @@ import Checkout from './Checkout';
 import Itemslist from './Itemslist';
 import SpinnerLoading from '../../components/SpinnerLoading';
 
-const Carts = ({cartlist}:any) => {
+const sleep = (time: number) => new Promise((resolve) => setTimeout(resolve,time));
+
+const Carts = ({cartlist, userid, checkoutNow, removeItemAll}:any) => {
   const [isLoading, setLoading] = useState<boolean>(false);
+  const totalCheckouts = useRef<any>('');
+  const handleCheckoutbutton = () => {
+      Alert.alert('Message Confirmation', 'Are you sure, do want to checkout?', [
+        {text: "No"},
+        {text: "YES", onPress: async () => { 
+            setLoading(true); 
+            await sleep(1000);
+            setLoading(false);
+            totalCheckouts.current.userid = userid;
+            checkoutNow(totalCheckouts.current);
+            removeItemAll();
+        }}
+      ]);
+  }
+
   return (
     <View style={styles.root}> 
     <SpinnerLoading isVisible={isLoading}/>
@@ -34,13 +51,13 @@ const Carts = ({cartlist}:any) => {
               {cartlist.map((data:any, index:number) => 
                 <Itemslist key={index} {...data} {...{setLoading}}/>
               )}
-              <Checkout data={cartlist}/>
+              <Checkout ref={totalCheckouts} data={cartlist}/>
               <View style={{
                 marginVertical: 15
               }}>
                 <FlatButtons
                   label="Check Out"
-                  
+                  onPress={handleCheckoutbutton}
                 />
               </View>
             </Fragment>
@@ -72,10 +89,16 @@ const Carts = ({cartlist}:any) => {
 }
 
 const mapToStates = (state:any) => ({
-  cartlist: state.carts.filter((data:any) => data.user_id == state.login.id) 
+  cartlist: state.carts.filter((data:any) => data.user_id == state.login.id),
+  userid: state.login.id, 
 });
 
-export default connect(mapToStates)(Carts)
+const mapToDispatch = (dispatch:any) => ({
+  checkoutNow: (props: any) => dispatch({type: "checkout_now", data: props}),
+  removeItemAll: () => dispatch({type: "remove_all_item"})
+})
+
+export default connect(mapToStates, mapToDispatch)(Carts)
 
 const styles = StyleSheet.create({
   root: {
