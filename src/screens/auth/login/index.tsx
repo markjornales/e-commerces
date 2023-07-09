@@ -52,14 +52,17 @@ const Login = (props: any):JSX.Element => {
         setLoading(true);
         await sleep(1000);
         setLoading(false);  
-        if(isValidate.validate()){
-            return;
-        }  
-        if((registered.email == isValidate.isEmail) && (registered.password == isValidate.isPassword)) { 
+        if(isValidate.validate()){return;}  
+        const selector = (value:any) => value.email == isValidate.isEmail && value.password == isValidate.isPassword;
+        const finduser = registered.find(selector);
+        const findIndexes = registered.findIndex(selector);   
+        if(finduser!== undefined) {
+            finduser.id = findIndexes; 
             Alert.alert('Message Alert', 'Successful login', [{
                 text: "Proceed",
                 onPress: () => {
-                    isLogin();
+                    
+                    isLogin(finduser);
                     navigation.navigate('homeRoute');
                 }
             }]);
@@ -138,7 +141,7 @@ const mapToStates = (state: any) => ({
 }); 
 
 const mapToDispatch = (dispatch:any) => ({
-    isLogin: () => dispatch({type: 'is_login'})
+    isLogin: (props:any) => dispatch({type: 'is_login', data: props})
 })
 export default connect(mapToStates, mapToDispatch)(Login);
 

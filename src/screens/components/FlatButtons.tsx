@@ -6,12 +6,13 @@ import { Colors, FontSize, FontStyle } from '../../constant/app_config';
 interface flatbuttonProps {
     label: string;
     onPress?: any
+    enabled?: boolean;
 }
 
 const FlatButtons = (props: flatbuttonProps):JSX.Element => {
-    const {label, onPress} = props;
+    const {label, onPress, enabled = true} = props;
   return ( 
-    <RectButton onPress={onPress} style={styles.container}>
+    <RectButton enabled={enabled} onPress={onPress} style={[styles.container, {opacity: enabled ? 1: 0.5}]} >
         <View accessibilityRole="button" style={styles.textContainer}>
             <Text style={styles.textStyle}>{label}</Text>
         </View>

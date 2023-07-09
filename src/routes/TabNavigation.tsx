@@ -12,10 +12,11 @@ import Accounts from '../screens/home/account';
 import Carts from '../screens/home/cart';
 import Explores from '../screens/home/explore';
 import Offers from '../screens/home/offer';
+import {connect} from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
-const TabNavigation = () => {
+const TabNavigation = ({carts}:any) => {    
   return (
     <Tab.Navigator screenOptions={{tabBarShowLabel: false, tabBarStyle: {height: 75, backgroundColor: Colors.white}}}>
         <Tab.Group screenOptions={{headerShown: false}}>
@@ -55,6 +56,7 @@ const TabNavigation = () => {
                 name="carts"
                 component={Carts}
                 options={{ 
+                    tabBarBadge: carts.length > 0 ? carts.length: null,
                     tabBarIcon: ({focused}: any) => (
                         <TabBarIconComponent
                             icon={<AntDesign
@@ -125,7 +127,9 @@ const TabBarIconComponent = (props: tabBariconProps) => {
     );
 }
 
-export default TabNavigation;
+export default connect((state:any) => ({
+    carts: state.carts.filter((data:any, index:number) => data.user_id == state.login.id) 
+}),null)(TabNavigation);
 
 const styles = StyleSheet.create({
     container: {

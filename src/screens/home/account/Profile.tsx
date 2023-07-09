@@ -11,8 +11,7 @@ import SpinnerLoading from '../../components/SpinnerLoading';
 
 const sleep = (time: number) => new Promise((resolve) => setTimeout(resolve,time));
 
-const Profile = ({register, registered}:any) => {
-
+const Profile = ({register, registered, id}:any) => {  
     const isValidation = useValidation({
         fullname: registered.fullname,
         email: registered.email,
@@ -28,6 +27,7 @@ const Profile = ({register, registered}:any) => {
           return;
         }
         register({
+            id: id,
             fullname: isValidation.isFullName,
             email: isValidation.isEmail,
             password: isValidation.isPassword
@@ -36,7 +36,6 @@ const Profile = ({register, registered}:any) => {
             text: "OK",
         }]);
     }
-
 
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1,}}>
@@ -86,16 +85,12 @@ const Profile = ({register, registered}:any) => {
   )
 }
 const mapToStates = (state: any) => ({
-    registered: state.registered,
+    id: state.login.id,
+    registered: state.registered.find((value:any, index:number) => index == state.login.id), 
 }); 
 
 const mapTodispatch = (dispatch: any) => ({
-    register: (props: any) => dispatch({
-        type: "registered", 
-        fullname: props.fullname,
-        email: props.email,
-        password: props.password
-    })
+    register: (props: any) => dispatch({ type: "update_register", data: props})
 });
 
 

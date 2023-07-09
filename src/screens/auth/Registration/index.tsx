@@ -98,12 +98,7 @@ const Regisration = (props: any):JSX.Element => {
 }
 
 const mapTodispatch = (dispatch: any) => ({
-    register: (props: any) => dispatch({
-        type: "registered", 
-        fullname: props.fullname,
-        email: props.email,
-        password: props.password
-    })
+    register: (props: any) => dispatch({  type: "registered", data: props})
 });
 
 export default connect(null, mapTodispatch)(Regisration)

@@ -4,6 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Colors, FontSize, FontStyle, Sizes } from '../../../constant/app_config';
 const datalists = [
     {
+        id: 1,
         imgsrc: require('../../../images/picture_nike.jpg'),
         productname: 'Sneakers for men & female',
         stars: 5,
@@ -11,6 +12,7 @@ const datalists = [
         discount: 25,
     },
     {
+      id: 2,
       imgsrc: require('../../../images/nike_white_shoe.jpg'),
       productname: "Nike Men's Blazer Low '77 Premium Shoes - White",
       stars: 5,
@@ -18,6 +20,7 @@ const datalists = [
       discount: 20
     },
     {
+        id: 3,
         imgsrc: require('../../../images/airmax_white_shoe_.jpg'),
         productname: "NEW ARRIVAL!! air force 1 for men AND WOMEN 36-45",
         stars: 3,
@@ -25,6 +28,7 @@ const datalists = [
         discount: 0
     },
     {
+        id: 4,
         imgsrc: require('../../../images/basketball_nike.jpg'),
         productname: "Nike Men's Air Deldon Basketball Shoes - Summit White",
         tagprice: 4000,
@@ -32,6 +36,7 @@ const datalists = [
         discount: 50,
     },
     {
+        id: 5,
         imgsrc: require('../../../images/airmax_black_green.jpg'),
         productname: "Nike Men's Air Max 90 Shoes - Black",
         tagprice: 5300,
@@ -39,6 +44,7 @@ const datalists = [
         discount: 50,
     },
     {
+        id:6,
         imgsrc: require('../../../images/air_force_2.jpg'),
         productname: "Air Force 2 Running Sneakers shoes For Men And women",
         tagprice: 600,

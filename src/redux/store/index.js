@@ -15,7 +15,7 @@ const store = createStore(persist(model, {
             AsyncStorage.removeItem(key)
         }
     },  
-    allow: ['registered', 'login'],
+    allow: ['registered', 'login', 'carts'],
 }));
 
 export default store;
