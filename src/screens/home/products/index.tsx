@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { Colors, Sizes } from '../../../constant/app_config'
+import { StyleSheet, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import HeaderNavHome from '../components/HeaderNavHome' 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { Colors, Sizes } from '../../../constant/app_config'
+import HeaderNavHome from '../components/HeaderNavHome'
 
 const Products = (props:any) => {
     const {route, navigation} = props; 
