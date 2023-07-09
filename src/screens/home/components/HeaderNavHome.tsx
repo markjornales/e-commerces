@@ -29,7 +29,11 @@ const HeaderNavHome = (props: headerNavHomeProps) => {
       <TouchableOpacity onPress={iconCliick} disabled={isIconClick}>
         {icons}
       </TouchableOpacity>
-      <Text style={styles.titleHeaderStyle}>{headerTitle}</Text>
+      <View style={{maxWidth: Sizes.fheight80}}>
+        <Text style={styles.titleHeaderStyle} numberOfLines={1}>
+          {headerTitle}
+        </Text>
+      </View>
       {bellNotif && <View style={styles.bellContainer}>
         <TouchableOpacity onPress={bellClick}>
           <View accessibilityRole="button">

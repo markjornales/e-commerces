@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Regisration from '../screens/auth/Registration';
 import Login from '../screens/auth/login';
 import TabNavigation from './TabNavigation';
+import Products from '../screens/home/products';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ const Stack = createNativeStackNavigator();
         </Stack.Group>:
         <Stack.Group screenOptions={{headerShown: false, animation: "fade"}}>
           <Stack.Screen name="homeRoute" component={TabNavigation}/>
+          <Stack.Screen name="productRoute" component={Products}/>
         </Stack.Group>
         }
     </Stack.Navigator>

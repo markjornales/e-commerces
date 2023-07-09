@@ -27,7 +27,7 @@ const LabelContents = (props: labelcontent) => {
   )
 }
 
-const Home = () => {
+const Home = ({navigation}:any) => {
   return (
     <View style={styles.root}> 
       <SafeAreaView style={styles.safearea}>
@@ -61,7 +61,7 @@ const Home = () => {
               />
               <OrderLists
                 onPress={(items) => { 
-                  
+                  navigation.navigate('productRoute', items);
                 }}
               /> 
             </View>

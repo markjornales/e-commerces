@@ -1,4 +1,3 @@
-
 import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import useFontsList from './src/hooks/useFontsList';
@@ -6,6 +5,7 @@ import Navigation from './src/routes/Navigation';
 import { Provider } from 'react-redux';
 import {StoreProvider} from 'easy-peasy';
 import store from './src/redux/store';
+import 'react-native-gesture-handler';
 
 export default function App() { 
   const {fontsLoaded} = useFontsList();
